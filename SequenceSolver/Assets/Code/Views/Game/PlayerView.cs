@@ -2,43 +2,59 @@
 using System.Collections;
 using strange.extensions.mediation.impl;
 using System;
+using Models;
+using strange.extensions.signal.impl;
 
 namespace Views
 {
     public class PlayerView : View,IPlayerView
     {
-        private float playerSpeed = .25f;
-        private CharacterController playerCharController { get; set; }
+        private float playerSpeed { get; set; }
+        private Movement playerMovement { get; set; }
+        private PlayerTargetPositionInput playerInfo { get; set; }
+
         [SerializeField]
         private Vector3 currentPositon;
         [SerializeField]
         private Vector3 targetPosition;
 
-        private int[] mySequence;
-        private int positionInSequence { get; set; }
         [SerializeField]
         private float movementLeft;
 
         private bool onFloor { get; set; }
 
+        public Signal<Movement> movePlayer { get; set; }
+        public Signal<PlayerTargetPositionInput> requestTargetPosition { get; set; }
+        public bool outOfMoves { get; set; }
+
         public void Init()
         {
-            Debug.Log("My player is alive and good to go");
-            playerCharController = this.gameObject.GetComponent<CharacterController>();
+            playerSpeed = .25f;
+            playerMovement = new Movement()
+            {
+                CurrentGameObject = this.gameObject,
+                MovementLeft = 0f,
+                PlayerSpeed = playerSpeed
+            };
+            playerInfo = new PlayerTargetPositionInput()
+            {
+                CurrentPosition = this.gameObject.transform.position
+            };
+            movePlayer = new Signal<Movement>();
+            requestTargetPosition = new Signal<PlayerTargetPositionInput>();
             targetPosition = this.gameObject.transform.position;
-            mySequence = new int[4] { 1, 1, 3, 4 };
-            positionInSequence = 0;
+            outOfMoves = false;
         }
 
         void Update()
         {
             if (onFloor)
             {
-                if (positionInSequence == 4)
-                    Debug.Log("GameOver");
-                if (targetPosition == this.gameObject.transform.position)
+                if (targetPosition == this.gameObject.transform.position && outOfMoves)
+                    Debug.Log("Monitor for lose");
+                else if (targetPosition == this.gameObject.transform.position)
                     GetPlayerInput();
-                else if (movementLeft < 0.4f)
+                else
                     MovePlayerToDesiredPosition();
             }
             else
@@ -49,6 +65,7 @@ namespace Views
 
         }
 
+        #region Triggers to determine if fallen off the tile floor
         void OnTriggerStay(Collider col)
         {
             onFloor = true;
@@ -56,41 +73,50 @@ namespace Views
 
         void OnTriggerExit(Collider col)
         {
-            onFloor = false;
+           // onFloor = false;
         }
+        #endregion
 
         private void GetPlayerInput()
         {
             if (Input.GetKeyDown(KeyCode.UpArrow))
             {
-                movementLeft = 0;
-                targetPosition += Vector3.up * mySequence[positionInSequence];
-                positionInSequence++;
+                UpdatePlayerInfo(Vector3.up);
+                requestTargetPosition.Dispatch(playerInfo);
             }
             else if (Input.GetKeyDown(KeyCode.RightArrow))
             {
-                movementLeft = 0;
-                targetPosition += Vector3.right * mySequence[positionInSequence];
-                positionInSequence++;
+                UpdatePlayerInfo(Vector3.right);
+                requestTargetPosition.Dispatch(playerInfo);
             }
             else if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                movementLeft = 0;
-                targetPosition += Vector3.left * mySequence[positionInSequence];
-                positionInSequence++;
+                UpdatePlayerInfo(Vector3.left);
+                requestTargetPosition.Dispatch(playerInfo);
             }
             else if (Input.GetKeyDown(KeyCode.DownArrow))
             {
-                movementLeft = 0;
-                targetPosition += Vector3.down * mySequence[positionInSequence];
-                positionInSequence++;
+                UpdatePlayerInfo(Vector3.down);
+                requestTargetPosition.Dispatch(playerInfo);
             }
+        }
+
+        private void UpdatePlayerInfo(Vector3 direction)
+        {
+            playerInfo.CurrentPosition = this.gameObject.transform.position;
+            playerInfo.DirectionOfTravel = direction;
         }
 
         private void MovePlayerToDesiredPosition()
         {
-            transform.position = Vector3.Lerp(this.gameObject.transform.position, targetPosition, movementLeft);
-            movementLeft += (Time.deltaTime * playerSpeed) / positionInSequence;
+            playerMovement.TargetPosition = targetPosition;
+            movePlayer.Dispatch(playerMovement);
+        }
+
+        public void UpdateTargetPosition(Vector3 updatedTargetPosition)
+        {
+            targetPosition = updatedTargetPosition;
+            playerMovement.MovementLeft = 0;
         }
     }
 }
