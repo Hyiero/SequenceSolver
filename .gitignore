@@ -24,3 +24,13 @@ ExportedObj/
 
 # Unity3D Generated File On Crash Reports
 sysinfo.txt
+/SequenceSolver/Temp
+/SequenceSolver/ProjectSettings
+/SequenceSolver/Library
+/SequenceSolver/Assets/StrangeIoC
+/SequenceSolver/Assets/Resources
+/SequenceSolver/Assets/Scenes
+/SequenceSolver/Assets/StrangeIoC.meta
+/SequenceSolver/Assets/Scenes.meta
+/SequenceSolver/Assets/Resources.meta
+/SequenceSolver/Assets/Animations.meta
