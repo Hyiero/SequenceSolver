@@ -22,6 +22,7 @@ namespace Views
         private float movementLeft;
 
         private bool onFloor { get; set; }
+        private bool haveNotWon { get; set; }
 
         public Signal<Movement> movePlayer { get; set; }
         public Signal<PlayerTargetPositionInput> requestTargetPosition { get; set; }
@@ -44,14 +45,16 @@ namespace Views
             requestTargetPosition = new Signal<PlayerTargetPositionInput>();
             targetPosition = this.gameObject.transform.position;
             outOfMoves = false;
+            haveNotWon = false; //This will get updated if the player hits the door with the shard, signal will send out to update this. The door will know about the players last move
+            //due to the lastmovesignal and if the player has not interacted with the door then it will continue on to the game over signal to be dispatched here.
         }
 
         void Update()
         {
-            if (onFloor)
+            if (onFloor && !haveNotWon)
             {
                 if (targetPosition == this.gameObject.transform.position && outOfMoves)
-                    Debug.Log("Monitor for lose");
+                    Debug.Log("Send out Game Over Signal");
                 else if (targetPosition == this.gameObject.transform.position)
                     GetPlayerInput();
                 else
@@ -59,8 +62,8 @@ namespace Views
             }
             else
             {
-                Debug.Log("GameOver");
-                Debug.Log("Play Death Animation here");
+                Debug.Log("Send out falling animation");
+                Debug.Log("Send out Game Over signal");
             }
 
         }
