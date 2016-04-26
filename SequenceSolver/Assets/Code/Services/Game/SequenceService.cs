@@ -41,7 +41,7 @@ namespace Services
 
         private int[] GenerateSequence()
         {
-            int[] sequence = new int[4] { 1, 1, 2, 3 };
+            int[] sequence = new int[4] { 1, 1, 1, 3 };
             return sequence;
         }
     }

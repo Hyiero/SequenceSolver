@@ -55,8 +55,11 @@ namespace Views
             {
                 if (targetPosition == this.gameObject.transform.position && outOfMoves)
                     Debug.Log("Send out Game Over Signal");
-                else if (targetPosition == this.gameObject.transform.position)
+                else if (targetPosition == this.gameObject.transform.position) //TODO: Send out the players position once when he reaches his target position
+                {
                     GetPlayerInput();
+                    Debug.Log(this.gameObject.transform.position);
+                }
                 else
                     MovePlayerToDesiredPosition();
             }
