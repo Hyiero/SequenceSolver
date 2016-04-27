@@ -22,7 +22,6 @@ namespace Views
         private float movementLeft;
 
         private bool onFloor { get; set; }
-        private bool haveNotWon { get; set; }
 
         public Signal<Movement> movePlayer { get; set; }
         public Signal<PlayerTargetPositionInput> requestTargetPosition { get; set; }
@@ -47,23 +46,22 @@ namespace Views
             targetPosition = this.gameObject.transform.position;
             isCurrentPositionUpdated = false;
             outOfMoves = false;
-            haveNotWon = false; //This will get updated if the player hits the door with the shard, signal will send out to update this. The door will know about the players last move
-            //due to the lastmovesignal and if the player has not interacted with the door then it will continue on to the game over signal to be dispatched here.
         }
 
         void Update()
         {
-            if (onFloor && !haveNotWon)
+            if (onFloor)
             {
-                if (targetPosition == this.gameObject.transform.position && outOfMoves)
-                    Debug.Log("Send out Game Over Signal");
-                else if (targetPosition == this.gameObject.transform.position) //TODO: Send out the players position once when he reaches his target position
+                //TODO: Possibly take this out of the player or put code in here and not the door or create Level Manager to do this? player and door shouldn't be responsible if player failed to reach the objective or not
+                if (targetPosition == this.gameObject.transform.position && !outOfMoves)
                 {
                     GetPlayerInput();
                     SendOutCurrentPositionUpdate();
                 }
-                else
+                else if(targetPosition != this.gameObject.transform.position)
+                {
                     MovePlayerToDesiredPosition();
+                }
             }
             else
             {
