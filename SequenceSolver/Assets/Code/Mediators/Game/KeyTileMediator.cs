@@ -3,6 +3,7 @@ using System.Collections;
 using strange.extensions.mediation.impl;
 using Views;
 using Signals;
+using strange.extensions.injector.api;
 
 namespace Mediators
 {
@@ -12,12 +13,16 @@ namespace Mediators
         public IKeyTileView view { get; set; }
 
         [Inject]
-        public PlayersTargetPositionResponseSignal playersTargetPositionResponse { get; set; }
+        public UpdatePlayerCurrentPositionSignal updatePlayerCurrentPosition { get; set; }
+
+        [Inject]
+        public IInjectionBinder injectionBinder { get; set; }
 
         public override void OnRegister()
         {
             view.Init();
-            playersTargetPositionResponse.AddListener(UpdatePlayersTargetPosition);
+            view.unlock.AddListener(DispatchUnlockSignal);
+            updatePlayerCurrentPosition.AddListener(UpdatePlayersPosition);
         }
 
         public override void OnEnabled()
@@ -25,10 +30,15 @@ namespace Mediators
             Debug.Log("On Enabled in Mediator hit");
         }
 
-        //TODO: Recieve the signal for the players current position, not his target position
-        private void UpdatePlayersTargetPosition(Vector3 targetPosition)
+        private void UpdatePlayersPosition(Vector3 currentPosition)
         {
-            view.UpdatePlayersTargetPosition(targetPosition);
+            view.UpdatePlayersCurrentPosition(currentPosition);
+        }
+
+        private void DispatchUnlockSignal()
+        {
+            UnlockALockSignal unlockALock = (UnlockALockSignal)injectionBinder.GetInstance<UnlockALockSignal>();
+            unlockALock.Dispatch();
         }
     }
 }

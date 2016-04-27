@@ -8,6 +8,7 @@ using Commands;
 using Views;
 using Mediators;
 using Services;
+using Util;
 
 namespace Contexts
 {
@@ -44,11 +45,13 @@ namespace Contexts
             GetGameObjectReferences();
 
             #region Singletons and Signals that are disptached from anywhere
-            injectionBinder.Bind<MovePlayerSignal>().ToSingleton();
-            injectionBinder.Bind<RequestPlayersTargetPositionSignal>().ToSingleton();
             injectionBinder.Bind<PlayersTargetPositionResponseSignal>().ToSingleton();
             injectionBinder.Bind<PlayerIsOutOfMovesSignal>().ToSingleton();
+            injectionBinder.Bind<UpdatePlayerCurrentPositionSignal>().ToSingleton();
+            injectionBinder.Bind<RemoveLockFromDoorSignal>().ToSingleton();
+
             injectionBinder.Bind<ISequenceService>().ToValue(sequenceService).ToSingleton();
+            injectionBinder.Bind<IMathHelper>().To<MathHelper>().ToSingleton();
             #endregion
 
             //TODO: Take out binding to value in this part. Instead load the resources in a gameService and then bind them to value when we have loaded the "map".
@@ -64,6 +67,7 @@ namespace Contexts
             commandBinder.Bind<StartFirstLevelSignal>().To<StartGameCommand>();
             commandBinder.Bind<MovePlayerSignal>().To<MovePlayerCommand>();
             commandBinder.Bind<RequestPlayersTargetPositionSignal>().To<FetchPlayersTargetPositionCommand>();
+            commandBinder.Bind<UnlockALockSignal>().To<UnlockALockCommand>();
         }
 
         private void GetGameObjectReferences()

@@ -1,21 +1,33 @@
 ﻿using UnityEngine;
 using System.Collections;
 using strange.extensions.mediation.impl;
+using Util;
+using strange.extensions.signal.impl;
 
 namespace Views
 {
     public class KeyTileView : View,IKeyTileView
     {
+        [Inject]
+        public IMathHelper mathHelper { get; set; }
+
+        public Signal unlock { get; set; }
+
         [SerializeField]
-        private Vector3 playersTargetPosition;
+        private Vector3 playersCurrentPosition;
 
         [SerializeField]
         private Vector3 myRoundedPosition;
+        private Sprite activatedSprite { get; set; }
+        private SpriteRenderer spriteRenderer { get; set; }
 
         public void Init()
         {
             Debug.Log("We have a key tile in the map");
-            myRoundedPosition = new Vector3(Mathf.Round(this.gameObject.transform.position.x * 10) / 10, Mathf.Round(this.gameObject.transform.position.y * 10) / 10, 0);
+            myRoundedPosition = mathHelper.RoundVector3ToNearestTenth(this.gameObject.transform.position);
+            activatedSprite = Resources.Load<Sprite>("Sprites/PressedActivateDoorFloor");
+            spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+            unlock = new Signal();
         }
 
         protected override void Awake()
@@ -27,13 +39,19 @@ namespace Views
         void OnTriggerStay(Collider col)
         {
             Debug.Log("Your on me");
-            if (playersTargetPosition == myRoundedPosition)
-                Debug.Log("Players destination is me");
+            if (playersCurrentPosition == myRoundedPosition && spriteRenderer.sprite != activatedSprite)
+                ActivateFloorSwitch();
         }
 
-        public void UpdatePlayersTargetPosition(Vector3 targetPosition)
+        public void UpdatePlayersCurrentPosition(Vector3 currentPosition)
         {
-            playersTargetPosition = new Vector3(Mathf.Round(targetPosition.x * 10) / 10, Mathf.Round(targetPosition.y * 10), 0);
+            playersCurrentPosition = mathHelper.RoundVector3ToNearestTenth(currentPosition);
+        }
+
+        private void ActivateFloorSwitch()
+        {
+            unlock.Dispatch();
+            spriteRenderer.sprite = activatedSprite;
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Commands
         public override void Execute()
         {          
             Vector3 playerPosition = playerMovement.CurrentGameObject.transform.position;
-            float lerpTime = playerMovement.MovementLeft / sequenceService.GetPositionInSequeunce();
+            float lerpTime = playerMovement.MovementLeft;
             playerMovement.CurrentGameObject.transform.position = Vector3.Lerp(playerPosition, playerMovement.TargetPosition, lerpTime);
         }
     }

@@ -12,9 +12,9 @@ namespace Views
         private float playerSpeed { get; set; }
         private Movement playerMovement { get; set; }
         private PlayerTargetPositionInput playerInfo { get; set; }
+        private bool outOfMoves { get; set; }
+        private bool isCurrentPositionUpdated { get; set; }
 
-        [SerializeField]
-        private Vector3 currentPositon;
         [SerializeField]
         private Vector3 targetPosition;
 
@@ -26,7 +26,7 @@ namespace Views
 
         public Signal<Movement> movePlayer { get; set; }
         public Signal<PlayerTargetPositionInput> requestTargetPosition { get; set; }
-        public bool outOfMoves { get; set; }
+        public Signal<Vector3> updateCurrentPosition { get; set; }
 
         public void Init()
         {
@@ -43,7 +43,9 @@ namespace Views
             };
             movePlayer = new Signal<Movement>();
             requestTargetPosition = new Signal<PlayerTargetPositionInput>();
+            updateCurrentPosition = new Signal<Vector3>();
             targetPosition = this.gameObject.transform.position;
+            isCurrentPositionUpdated = false;
             outOfMoves = false;
             haveNotWon = false; //This will get updated if the player hits the door with the shard, signal will send out to update this. The door will know about the players last move
             //due to the lastmovesignal and if the player has not interacted with the door then it will continue on to the game over signal to be dispatched here.
@@ -58,7 +60,7 @@ namespace Views
                 else if (targetPosition == this.gameObject.transform.position) //TODO: Send out the players position once when he reaches his target position
                 {
                     GetPlayerInput();
-                    Debug.Log(this.gameObject.transform.position);
+                    SendOutCurrentPositionUpdate();
                 }
                 else
                     MovePlayerToDesiredPosition();
@@ -116,6 +118,7 @@ namespace Views
         private void MovePlayerToDesiredPosition()
         {
             playerMovement.TargetPosition = targetPosition;
+            isCurrentPositionUpdated = false;
             movePlayer.Dispatch(playerMovement);
         }
 
@@ -123,6 +126,20 @@ namespace Views
         {
             targetPosition = updatedTargetPosition;
             playerMovement.MovementLeft = 0;
+        }
+
+        public void SetOutOfMoves()
+        {
+            outOfMoves = true;
+        }
+
+        private void SendOutCurrentPositionUpdate()
+        {
+            if (!isCurrentPositionUpdated)
+            {
+                updateCurrentPosition.Dispatch(this.gameObject.transform.position);
+                isCurrentPositionUpdated = true;
+            }
         }
     }
 }
