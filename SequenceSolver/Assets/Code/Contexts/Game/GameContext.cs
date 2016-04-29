@@ -46,9 +46,10 @@ namespace Contexts
 
             #region Singletons and Signals that are disptached from anywhere
             injectionBinder.Bind<PlayersTargetPositionResponseSignal>().ToSingleton();
-            injectionBinder.Bind<PlayerIsOutOfMovesSignal>().ToSingleton();
+            injectionBinder.Bind<PlayerIsOutOfMovesSignal>().ToSingleton(); 
             injectionBinder.Bind<UpdatePlayerCurrentPositionSignal>().ToSingleton();
             injectionBinder.Bind<RemoveLockFromDoorSignal>().ToSingleton();
+            injectionBinder.Bind<EndOfSequenceSignal>().ToSingleton();
 
             injectionBinder.Bind<ISequenceService>().ToValue(sequenceService).ToSingleton();
             injectionBinder.Bind<IMathHelper>().To<MathHelper>().ToSingleton();

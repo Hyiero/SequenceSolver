@@ -8,7 +8,7 @@ namespace Services
     public class SequenceService : View,ISequenceService
     {
         [Inject]
-        public PlayerIsOutOfMovesSignal outOfMoves { get; set; }
+        public EndOfSequenceSignal endOfSequence { get; set; }
 
         private int[] currentSequence;
         private int currentPositionInSequence;
@@ -30,7 +30,7 @@ namespace Services
             {
                 currentPositionInSequence++;
                 if (currentPositionInSequence == currentSequence.Length)
-                    outOfMoves.Dispatch();
+                    endOfSequence.Dispatch();
             }
         }
 

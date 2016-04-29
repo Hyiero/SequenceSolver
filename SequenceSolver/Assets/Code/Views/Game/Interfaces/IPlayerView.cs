@@ -10,6 +10,7 @@ namespace Views
         Signal<Movement> movePlayer { get; set; }
         Signal<PlayerTargetPositionInput> requestTargetPosition { get; set; }
         Signal<Vector3> updateCurrentPosition { get; set; }
+        Signal doneMoving { get; set; }
 
         void Init();
         void UpdateTargetPosition(Vector3 updatedTargetPosition);

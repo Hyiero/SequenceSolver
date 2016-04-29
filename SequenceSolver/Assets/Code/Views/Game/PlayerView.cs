@@ -26,6 +26,7 @@ namespace Views
         public Signal<Movement> movePlayer { get; set; }
         public Signal<PlayerTargetPositionInput> requestTargetPosition { get; set; }
         public Signal<Vector3> updateCurrentPosition { get; set; }
+        public Signal doneMoving { get; set; }
 
         public void Init()
         {
@@ -43,6 +44,7 @@ namespace Views
             movePlayer = new Signal<Movement>();
             requestTargetPosition = new Signal<PlayerTargetPositionInput>();
             updateCurrentPosition = new Signal<Vector3>();
+            doneMoving = new Signal();
             targetPosition = this.gameObject.transform.position;
             isCurrentPositionUpdated = false;
             outOfMoves = false;
@@ -57,6 +59,10 @@ namespace Views
                 {
                     GetPlayerInput();
                     SendOutCurrentPositionUpdate();
+                }
+                else if(targetPosition == this.gameObject.transform.position && outOfMoves)
+                {
+                    doneMoving.Dispatch();
                 }
                 else if(targetPosition != this.gameObject.transform.position)
                 {

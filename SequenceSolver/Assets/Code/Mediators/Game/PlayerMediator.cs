@@ -25,7 +25,7 @@ namespace Mediators
         public UpdatePlayerCurrentPositionSignal updatePlayerCurrentPosition { get; set; }
 
         [Inject]
-        public PlayerIsOutOfMovesSignal outOfMoves { get; set; }
+        public EndOfSequenceSignal endOfSequence { get; set; }
         #endregion
 
         public override void OnRegister()
@@ -34,8 +34,9 @@ namespace Mediators
             view.movePlayer.AddListener(MovePlayer);
             view.requestTargetPosition.AddListener(RequestTargetPositionForPlayer);
             view.updateCurrentPosition.AddListener(DispatchCurrentPosition);
+            view.doneMoving.AddListener(PlayerIsAtMoveLimit);
             playersTargetPositionResponse.AddListener(UpdatePlayersTargetPosition);
-            outOfMoves.AddListener(PlayerIsOutOfMoves);
+            endOfSequence.AddListener(SquenceIsAtTheEnd);
         }
 
         private void MovePlayer(Movement playerMovement)
@@ -56,7 +57,7 @@ namespace Mediators
             view.UpdateTargetPosition(targetPosition);
         }
 
-        private void PlayerIsOutOfMoves()
+        private void SquenceIsAtTheEnd()
         {
             view.SetOutOfMoves();
         }
@@ -64,6 +65,11 @@ namespace Mediators
         private void DispatchCurrentPosition(Vector3 currentPosition)
         {
             updatePlayerCurrentPosition.Dispatch(currentPosition);
+        }
+
+        private void PlayerIsAtMoveLimit()
+        {
+            Debug.Log("Player is done moving, has he won or lost");
         }
     }
 }
