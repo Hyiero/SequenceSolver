@@ -2,10 +2,9 @@
 using System.Collections;
 using strange.extensions.signal.impl;
 
-namespace Views
+namespace Signals
 {
-    public interface IKeyTileView : ITileView
+    public class UnlockTheExitSignal : Signal
     {
-        Signal unlock { get; set; }
     }
 }

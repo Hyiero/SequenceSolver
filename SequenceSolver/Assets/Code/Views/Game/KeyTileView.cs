@@ -6,46 +6,20 @@ using strange.extensions.signal.impl;
 
 namespace Views
 {
-    public class KeyTileView : View,IKeyTileView
+    public class KeyTileView : TileView
     {
-        [Inject]
-        public IMathHelper mathHelper { get; set; }
-
         public Signal unlock { get; set; }
 
-        [SerializeField]
-        private Vector3 playersCurrentPosition;
-
-        [SerializeField]
-        private Vector3 myRoundedPosition;
-        private Sprite activatedSprite { get; set; }
-        private SpriteRenderer spriteRenderer { get; set; }
-
-        public void Init()
+        public override void Init(string spriteName)
         {
-            Debug.Log("We have a key tile in the map");
-            myRoundedPosition = mathHelper.RoundVector3ToNearestTenth(this.gameObject.transform.position);
-            activatedSprite = Resources.Load<Sprite>("Sprites/PressedActivateDoorFloor");
-            spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+            base.Init(spriteName);
             unlock = new Signal();
-        }
-
-        protected override void Awake()
-        {
-            base.Awake();
-            Debug.Log("Awake hit in the KeyTileView");
         }
 
         void OnTriggerStay(Collider col)
         {
-            Debug.Log("Your on me");
             if (playersCurrentPosition == myRoundedPosition && spriteRenderer.sprite != activatedSprite)
                 ActivateFloorSwitch();
-        }
-
-        public void UpdatePlayersCurrentPosition(Vector3 currentPosition)
-        {
-            playersCurrentPosition = mathHelper.RoundVector3ToNearestTenth(currentPosition);
         }
 
         private void ActivateFloorSwitch()

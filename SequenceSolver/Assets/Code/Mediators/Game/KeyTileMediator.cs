@@ -9,25 +9,24 @@ namespace Mediators
 {
     public class KeyTileMediator : EventMediator
     {
+        #region Injections
         [Inject]
-        public IKeyTileView view { get; set; }
+        public KeyTileView view { get; set; }
 
         [Inject]
         public UpdatePlayerCurrentPositionSignal updatePlayerCurrentPosition { get; set; }
 
         [Inject]
         public IInjectionBinder injectionBinder { get; set; }
+        #endregion
+
+        private string activatedSpriteName = "Sprites/PressedActivateDoorFloor";
 
         public override void OnRegister()
         {
-            view.Init();
+            view.Init(activatedSpriteName);
             view.unlock.AddListener(DispatchUnlockSignal);
             updatePlayerCurrentPosition.AddListener(UpdatePlayersPosition);
-        }
-
-        public override void OnEnabled()
-        {
-            Debug.Log("On Enabled in Mediator hit");
         }
 
         private void UpdatePlayersPosition(Vector3 currentPosition)

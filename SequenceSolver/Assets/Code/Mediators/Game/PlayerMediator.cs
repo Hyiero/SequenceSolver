@@ -13,7 +13,7 @@ namespace Mediators
 
         #region Injectors
         [Inject]
-        public IPlayerView view { get; set; }
+        public PlayerView view { get; set; }
 
         [Inject]
         public IInjectionBinder injectionBinder { get; set; }
@@ -28,6 +28,8 @@ namespace Mediators
         public EndOfSequenceSignal endOfSequence { get; set; }
         #endregion
 
+        private bool notToldAnyonePlayerIsDoneMoving;
+
         public override void OnRegister()
         {
             view.Init();
@@ -37,6 +39,7 @@ namespace Mediators
             view.doneMoving.AddListener(PlayerIsAtMoveLimit);
             playersTargetPositionResponse.AddListener(UpdatePlayersTargetPosition);
             endOfSequence.AddListener(SquenceIsAtTheEnd);
+            notToldAnyonePlayerIsDoneMoving = true;
         }
 
         private void MovePlayer(Movement playerMovement)
@@ -69,7 +72,11 @@ namespace Mediators
 
         private void PlayerIsAtMoveLimit()
         {
-            Debug.Log("Player is done moving, has he won or lost");
+            if(notToldAnyonePlayerIsDoneMoving)
+            {
+                notToldAnyonePlayerIsDoneMoving = false;
+                Debug.Log("Find out if congratz or game over");
+            }
         }
     }
 }

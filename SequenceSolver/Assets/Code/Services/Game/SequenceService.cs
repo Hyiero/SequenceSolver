@@ -5,7 +5,7 @@ using Signals;
 
 namespace Services
 {
-    public class SequenceService : View,ISequenceService
+    public class SequenceService : ISequenceService
     {
         [Inject]
         public EndOfSequenceSignal endOfSequence { get; set; }

@@ -1,15 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ILevelManager : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+namespace Managers
+{
+    public interface IWinConditionManager
+    {
+        void SetExitDoorPosition(Vector3 exitPos);
+        void SetPlayersCurrentPosition(Vector3 playerPos);
+        void SetLocksOnDoor();
+        bool IsPlayerOutOfMoves();
+        void TogglePlayerOutOfMoves();
+        void ToggleDoorUnlocked();
+        bool DidPlayerWin();
+    }
 }

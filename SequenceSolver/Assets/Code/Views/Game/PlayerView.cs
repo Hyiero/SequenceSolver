@@ -7,8 +7,9 @@ using strange.extensions.signal.impl;
 
 namespace Views
 {
-    public class PlayerView : View,IPlayerView
+    public class PlayerView : View
     {
+
         private float playerSpeed { get; set; }
         private Movement playerMovement { get; set; }
         private PlayerTargetPositionInput playerInfo { get; set; }
@@ -17,9 +18,6 @@ namespace Views
 
         [SerializeField]
         private Vector3 targetPosition;
-
-        [SerializeField]
-        private float movementLeft;
 
         private bool onFloor { get; set; }
 
@@ -62,12 +60,11 @@ namespace Views
                 }
                 else if(targetPosition == this.gameObject.transform.position && outOfMoves)
                 {
+                    SendOutCurrentPositionUpdate();
                     doneMoving.Dispatch();
                 }
                 else if(targetPosition != this.gameObject.transform.position)
-                {
                     MovePlayerToDesiredPosition();
-                }
             }
             else
             {

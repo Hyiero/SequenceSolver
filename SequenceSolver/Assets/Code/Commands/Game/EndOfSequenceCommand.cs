@@ -5,11 +5,14 @@ using Managers;
 
 namespace Commands
 {
-    public class StartGameCommand : Command
+    public class EndOfSequenceCommand : Command
     {
+        [Inject]
+        public IWinConditionManager levelManager { get; set; }
+
         public override void Execute()
         {
-            Debug.Log("First Level has official started");
+            levelManager.TogglePlayerOutOfMoves();
         }
     }
 }
