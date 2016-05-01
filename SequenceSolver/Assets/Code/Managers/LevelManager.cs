@@ -8,6 +8,8 @@ namespace Managers
 {
     public class WinConditionManager : IWinConditionManager
     {
+
+        //TODO: Seperate anything that may need to come out this class.
         [Inject]
         public SetLocksOnDoorSignal setLocksOnDoor { get; set; }
 
