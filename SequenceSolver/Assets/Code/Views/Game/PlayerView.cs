@@ -69,7 +69,8 @@ namespace Views
             else
             {
                 Debug.Log("Send out falling animation");
-                Debug.Log("Send out Game Over signal");
+                Debug.Log("Send out Level failed signal");
+                //TODO: LossLifeSignal send out here then restart popup goes in the loss life command where it will check if we have enuff lives to retry.
             }
 
         }
@@ -82,7 +83,7 @@ namespace Views
 
         void OnTriggerExit(Collider col)
         {
-           // onFloor = false;
+            onFloor = false;
         }
         #endregion
 

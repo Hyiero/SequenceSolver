@@ -45,6 +45,7 @@ namespace Contexts
 
             injectionBinder.Bind<ISequenceService>().To<SequenceService>().ToSingleton();
             injectionBinder.Bind<IMathHelper>().To<MathHelper>().ToSingleton();
+            injectionBinder.Bind<IGameManager>().To<GameManager>().ToSingleton();
             injectionBinder.Bind<IWinConditionManager>().To<WinConditionManager>().ToSingleton();
             #endregion
 
@@ -56,6 +57,7 @@ namespace Contexts
             mediationBinder.Bind<PlayerView>().To<PlayerMediator>();
             mediationBinder.Bind<KeyTileView>().To<KeyTileMediator>();
             mediationBinder.Bind<ExitTileView>().To<ExitTileMediator>();
+            //mediationBinder.Bind<DisplayInformationView>().To<DisplayInformationMediator>();
 
             commandBinder.Bind<StartFirstLevelSignal>().To<StartGameCommand>();
             commandBinder.Bind<MovePlayerSignal>().To<MovePlayerCommand>();

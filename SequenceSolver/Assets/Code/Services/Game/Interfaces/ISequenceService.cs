@@ -5,8 +5,8 @@ namespace Services
 {
     public interface ISequenceService
     {
-        int GetPositionInSequeunce();
-        void MoveToNextPositionInSequence();
         int GetCurrentValueOfSequence();
+        void MoveToNextPositionInSequence();
+        void SetCurrentSequence(int currentLevel);
     }
 }

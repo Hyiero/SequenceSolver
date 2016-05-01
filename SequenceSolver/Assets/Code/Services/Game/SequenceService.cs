@@ -10,19 +10,14 @@ namespace Services
         [Inject]
         public EndOfSequenceSignal endOfSequence { get; set; }
 
+        [Inject]
+        public UpdateCurrentSequenceSignal updateCurrentSequence { get; set; }
+
+        [Inject]
+        public UpdateCurrentPositionInSequenceSignal updateCurrentPositionInSequence { get; set; }
+
         private int[] currentSequence;
         private int currentPositionInSequence;
-
-        public SequenceService()
-        {
-            currentSequence = GenerateSequence();
-            currentPositionInSequence = 0;
-        }
-
-        public int GetPositionInSequeunce()
-        {
-            return currentPositionInSequence;
-        }
 
         public void MoveToNextPositionInSequence()
         {
@@ -31,12 +26,22 @@ namespace Services
                 currentPositionInSequence++;
                 if (currentPositionInSequence == currentSequence.Length)
                     endOfSequence.Dispatch();
+                else
+                    updateCurrentPositionInSequence.Dispatch(currentPositionInSequence);
             }
         }
 
         public int GetCurrentValueOfSequence()
         {
             return currentSequence[currentPositionInSequence];
+        }
+
+        public void SetCurrentSequence(int currentLevel)
+        {
+            currentSequence = GenerateSequence();
+            updateCurrentSequence.Dispatch(currentSequence);
+            currentPositionInSequence = 0;
+            updateCurrentPositionInSequence.Dispatch(currentPositionInSequence);
         }
 
         private int[] GenerateSequence()

@@ -73,7 +73,7 @@ namespace Managers
             }
             else
             {
-                Debug.Log("Game Over");
+                Debug.Log("Game Over"); //TODO: LossLifeSignal send out here then restart popup.
                 return false;
             }
         }
