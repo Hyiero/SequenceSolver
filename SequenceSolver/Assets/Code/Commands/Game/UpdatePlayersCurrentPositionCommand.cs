@@ -11,13 +11,13 @@ namespace Commands
         public Vector3 playersCurrentPos { get; set; }
 
         [Inject]
-        public IWinConditionManager levelManager { get; set; }
+        public IWinConditionManager winConditionManager { get; set; }
 
         public override void Execute()
         {
-            levelManager.SetPlayersCurrentPosition(playersCurrentPos);
-            if (levelManager.IsPlayerOutOfMoves())
-                levelManager.DidPlayerWin();
+            winConditionManager.SetPlayersCurrentPosition(playersCurrentPos);
+            if (winConditionManager.IsPlayerOutOfMoves())
+                winConditionManager.DidPlayerWin();
         }
     }
 }

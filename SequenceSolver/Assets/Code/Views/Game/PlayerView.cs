@@ -19,12 +19,13 @@ namespace Views
         [SerializeField]
         private Vector3 targetPosition;
 
-        private bool onFloor { get; set; }
+        private int onFloor { get; set; }
 
         public Signal<Movement> movePlayer { get; set; }
         public Signal<PlayerTargetPositionInput> requestTargetPosition { get; set; }
         public Signal<Vector3> updateCurrentPosition { get; set; }
         public Signal doneMoving { get; set; }
+        public Signal fellOff { get; set; }
 
         public void Init()
         {
@@ -43,6 +44,7 @@ namespace Views
             requestTargetPosition = new Signal<PlayerTargetPositionInput>();
             updateCurrentPosition = new Signal<Vector3>();
             doneMoving = new Signal();
+            fellOff = new Signal();
             targetPosition = this.gameObject.transform.position;
             isCurrentPositionUpdated = false;
             outOfMoves = false;
@@ -50,7 +52,7 @@ namespace Views
 
         void Update()
         {
-            if (onFloor)
+            if (onFloor == 0)
             {
                 //TODO: Possibly take this out of the player or put code in here and not the door or create Level Manager to do this? player and door shouldn't be responsible if player failed to reach the objective or not
                 if (targetPosition == this.gameObject.transform.position && !outOfMoves)
@@ -66,11 +68,11 @@ namespace Views
                 else if(targetPosition != this.gameObject.transform.position)
                     MovePlayerToDesiredPosition();
             }
-            else
+            else if(onFloor == 1)
             {
                 Debug.Log("Send out falling animation");
-                Debug.Log("Send out Level failed signal");
-                //TODO: LossLifeSignal send out here then restart popup goes in the loss life command where it will check if we have enuff lives to retry.
+                onFloor = 2;
+                fellOff.Dispatch();
             }
 
         }
@@ -78,12 +80,12 @@ namespace Views
         #region Triggers to determine if fallen off the tile floor
         void OnTriggerStay(Collider col)
         {
-            onFloor = true;
+            onFloor = 0;
         }
 
         void OnTriggerExit(Collider col)
         {
-            onFloor = false;
+            onFloor = 1;
         }
         #endregion
 
@@ -142,6 +144,11 @@ namespace Views
                 updateCurrentPosition.Dispatch(this.gameObject.transform.position);
                 isCurrentPositionUpdated = true;
             }
+        }
+
+        private void ResetPlayerToStart()
+        {
+            onFloor = 0;
         }
     }
 }

@@ -67,6 +67,7 @@ namespace Contexts
             commandBinder.Bind<UpdatePlayerCurrentPositionSignal>().To<UpdatePlayersCurrentPositionCommand>();
             commandBinder.Bind<EndOfSequenceSignal>().To<EndOfSequenceCommand>();
             commandBinder.Bind<UnlockTheExitSignal>().To<UnlockExitDoorCommand>();
+            commandBinder.Bind<LoseLevelSignal>().To<LoseLevelCommand>();
         }
     }
 }

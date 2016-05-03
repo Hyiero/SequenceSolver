@@ -25,7 +25,6 @@ namespace Contexts
         {
             injectionBinder.Bind<UpdateCurrentSequenceSignal>().ToSingleton().CrossContext();
             injectionBinder.Bind<UpdateCurrentPositionInSequenceSignal>().ToSingleton().CrossContext();
-            injectionBinder.Bind<UpdateNumberOfLivesLeftGUISignal>().ToSingleton().CrossContext();
 
             mediationBinder.Bind<DisplayInformationView>().To<DisplayInformationMediator>();
         }

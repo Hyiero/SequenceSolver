@@ -37,6 +37,7 @@ namespace Mediators
             view.requestTargetPosition.AddListener(RequestTargetPositionForPlayer);
             view.updateCurrentPosition.AddListener(DispatchCurrentPosition);
             view.doneMoving.AddListener(PlayerIsAtMoveLimit);
+            view.fellOff.AddListener(PlayerLostALife);
             playersTargetPositionResponse.AddListener(UpdatePlayersTargetPosition);
             endOfSequence.AddListener(SquenceIsAtTheEnd);
             notToldAnyonePlayerIsDoneMoving = true;
@@ -77,6 +78,12 @@ namespace Mediators
                 notToldAnyonePlayerIsDoneMoving = false;
                 Debug.Log("Find out if congratz or game over");
             }
+        }
+
+        private void PlayerLostALife()
+        {
+            LoseLevelSignal loseLife = (LoseLevelSignal)injectionBinder.GetInstance<LoseLevelSignal>();
+            loseLife.Dispatch();
         }
     }
 }

@@ -8,14 +8,12 @@ namespace Views
 {
     public class DisplayInformationView : View
     {
-        public Text livesRemainingText;
         public Text currentSequenceText;
         public int positionInSequeunce { get; set; }
         public int[] currentSequence { get; set; }
 
         public void Init()
         {
-            livesRemainingText = GameObject.FindGameObjectWithTag("Lives_Left_Text").GetComponent<Text>();
             currentSequenceText = GameObject.FindGameObjectWithTag("Current_Sequence_Text").GetComponent<Text>();
             positionInSequeunce = 0;
         }
@@ -38,11 +36,6 @@ namespace Views
             {
                 currentSequenceText.text += number.ToString() + " ";
             }
-        }
-
-        public void UpdateLivesLeftText(int lives)
-        {
-            livesRemainingText.text = lives.ToString();
         }
     }
 }

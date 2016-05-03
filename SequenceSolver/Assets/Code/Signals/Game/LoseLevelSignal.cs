@@ -4,7 +4,7 @@ using strange.extensions.signal.impl;
 
 namespace Signals
 {
-    public class UpdateNumberOfLivesLeftGUISignal : Signal<int>
+    public class LoseLevelSignal : Signal
     {
     }
 }

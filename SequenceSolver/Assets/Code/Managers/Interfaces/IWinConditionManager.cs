@@ -11,6 +11,6 @@ namespace Managers
         bool IsPlayerOutOfMoves();
         void TogglePlayerOutOfMoves();
         void ToggleDoorUnlocked();
-        bool DidPlayerWin();
+        void DidPlayerWin();
     }
 }

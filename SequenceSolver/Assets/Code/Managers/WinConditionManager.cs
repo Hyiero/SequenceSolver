@@ -9,12 +9,17 @@ namespace Managers
     public class WinConditionManager : IWinConditionManager
     {
 
+        #region Injections
         //TODO: Seperate anything that may need to come out this class.
         [Inject]
         public SetLocksOnDoorSignal setLocksOnDoor { get; set; }
 
         [Inject]
         public IMathHelper mathHelper { get; set; }
+
+        [Inject]
+        public LoseLevelSignal loseLevel { get; set; }
+        #endregion
 
         private Vector3 exitDoorPosition { get; set; }
         private Vector3 playerCurrentPosition { get; set; }
@@ -31,13 +36,11 @@ namespace Managers
         public void SetExitDoorPosition(Vector3 exitPos)
         {
             exitDoorPosition = exitPos;
-            Debug.Log("Exit Position is at: " + exitDoorPosition);
         }
 
         public void SetPlayersCurrentPosition(Vector3 playerPos)
         {
             playerCurrentPosition = mathHelper.RoundVector3ToNearestTenth(playerPos);
-            Debug.Log("Player Position is at: " + playerPos);
         }
 
         public bool IsPlayerOutOfMoves()
@@ -64,17 +67,17 @@ namespace Managers
             setLocksOnDoor.Dispatch(locksOnDoor);
         }
 
-        public bool DidPlayerWin()
+        public void DidPlayerWin()
         {
             if ((doorUnlocked && playerIsOutOfMoves) && (playerCurrentPosition == exitDoorPosition))
             {
                 Debug.Log("Next Level");
-                return true;
+                //TODO: Send Signal to move on.
             }
             else
             {
                 Debug.Log("Game Over"); //TODO: LossLifeSignal send out here then restart popup.
-                return false;
+                loseLevel.Dispatch();
             }
         }
     }

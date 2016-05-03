@@ -5,8 +5,12 @@ namespace Managers
 {
     public interface IGameManager
     {
+        bool retriesActive { get; set; }
+
         void Init();
-        void SetNumberOfLivesLeft(int livesLeft);
-        int GetNumberOfLivesLeft();
+        void SetNumberOfRetriesLeft(int livesLeft);
+        int GetNumberOfRetriesLeft();
+        void RemoveRetry();
+        void AddRetries(int retriesToAdd);
     }
 }
