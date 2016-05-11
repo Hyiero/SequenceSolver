@@ -15,11 +15,15 @@ namespace Commands
         [Inject]
         public IGameManager GameManager { get; set; }
 
+        [Inject]
+        public IWinConditionManager winConditionManager { get; set; }
+
         public override void Execute()
         {
-            Debug.Log("Setting up service");
+            Debug.Log("Setting up GameState");
             GameManager.Init();
             sequenceService.SetCurrentSequence(0);
+            winConditionManager.SetLocksOnDoor();
         }
     }
 }

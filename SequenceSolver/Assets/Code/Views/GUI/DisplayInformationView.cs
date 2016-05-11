@@ -8,6 +8,7 @@ namespace Views
 {
     public class DisplayInformationView : View
     {
+        public Text locksLeftText;
         public Text currentSequenceText;
         public int positionInSequeunce { get; set; }
         public int[] currentSequence { get; set; }
@@ -15,6 +16,7 @@ namespace Views
         public void Init()
         {
             currentSequenceText = GameObject.FindGameObjectWithTag("Current_Sequence_Text").GetComponent<Text>();
+            locksLeftText = GameObject.FindGameObjectWithTag("Locks_Left_Text").GetComponent<Text>();
             positionInSequeunce = 0;
         }
 
@@ -36,6 +38,11 @@ namespace Views
             {
                 currentSequenceText.text += number.ToString() + " ";
             }
+        }
+
+        public void UpdateCurrentLocksLeftText(int locksLeft)
+        {
+            locksLeftText.text = locksLeft.ToString();
         }
     }
 }

@@ -25,6 +25,8 @@ namespace Contexts
         {
             injectionBinder.Bind<UpdateCurrentSequenceSignal>().ToSingleton().CrossContext();
             injectionBinder.Bind<UpdateCurrentPositionInSequenceSignal>().ToSingleton().CrossContext();
+            injectionBinder.Bind<SetLocksOnDoorSignal>().ToSingleton().CrossContext();
+            injectionBinder.Bind<RemoveLockFromDoorSignal>().ToSingleton().CrossContext();
 
             mediationBinder.Bind<DisplayInformationView>().To<DisplayInformationMediator>();
         }

@@ -37,7 +37,7 @@ namespace Mediators
             removeLockFromDoor.AddListener(RemoveOneLockFromDoor);
             setLocksOnDoor.AddListener(SetLocksOnExitDoor);
             //Need To Set Locks on Door Initially
-            SetLocksOnExitDoor(GameObject.FindObjectsOfType<KeyTileView>().Length);
+            //SetLocksOnExitDoor(GameObject.FindObjectsOfType<KeyTileView>().Length);
         }
 
         private void UnlockTheExitDoor()

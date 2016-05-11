@@ -39,9 +39,7 @@ namespace Contexts
             injectionBinder.Bind<PlayersTargetPositionResponseSignal>().ToSingleton();
             injectionBinder.Bind<PlayerIsOutOfMovesSignal>().ToSingleton(); 
             injectionBinder.Bind<UpdatePlayerCurrentPositionSignal>().ToSingleton();
-            injectionBinder.Bind<RemoveLockFromDoorSignal>().ToSingleton();
             injectionBinder.Bind<EndOfSequenceSignal>().ToSingleton();
-            injectionBinder.Bind<SetLocksOnDoorSignal>().ToSingleton();
 
             injectionBinder.Bind<ISequenceService>().To<SequenceService>().ToSingleton();
             injectionBinder.Bind<IMathHelper>().To<MathHelper>().ToSingleton();
