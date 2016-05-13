@@ -21,6 +21,7 @@ namespace Services
 
         public void MoveToNextPositionInSequence()
         {
+            //TODO:We should be be hooking into updateCurrentPosition in Sequeunce in order for us to update the GUI when move has been made
             if (currentPositionInSequence < currentSequence.Length)
             {
                 currentPositionInSequence++;
