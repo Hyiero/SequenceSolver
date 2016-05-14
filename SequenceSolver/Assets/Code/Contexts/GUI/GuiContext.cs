@@ -23,6 +23,7 @@ namespace Contexts
 
         protected override void mapBindings()
         {
+            //TODO: Make a root context to put all cross context in
             injectionBinder.Bind<UpdateCurrentSequenceSignal>().ToSingleton().CrossContext();
             injectionBinder.Bind<UpdateCurrentPositionInSequenceSignal>().ToSingleton().CrossContext();
             injectionBinder.Bind<SetLocksOnDoorSignal>().ToSingleton().CrossContext();
